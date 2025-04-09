@@ -1,0 +1,67 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+Table users {
+  id integer [primary key]
+  email varchar [unique]
+  password varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table restaurants {
+  id integer [primary key]
+  name varchar
+  address text
+  rating integer
+  user_id integer [not null]
+  created_at timestamp 
+  updated_at timestamp
+}
+
+Table menu {
+  id integer [primary key]
+  name varchar
+  price integer
+  restaurant_id integer [not null]
+  quantity integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table ratings {
+  id integer [primary key]
+  rating integer
+  user_id integer [not null]
+  restaurant_id integer [not null]
+  created_at timestamp
+}
+
+Table orders {
+  id integer [primary key]
+  user_id integer [not null]
+  restaurant_id integer [not null]
+  total_amount decimal(10, 2)
+  status varchar [note: 'pending, confirmed, preparing, delivered, cancelled']
+  payment_method varchar [note: 'cash, card, online']
+  payment_status varchar [note: 'paid, unpaid']
+  delivery_address text
+  placed_at timestamp
+  updated_at timestamp
+}
+
+Table order_items {
+  id integer [primary key]
+  order_id integer [not null]
+  menu_id integer [not null]
+  quantity integer
+  price decimal(10, 2)
+}
+
+Ref: order_items.order_id > orders.id
+Ref: order_items.menu_id > menu.id
+Ref: orders.user_id > users.id
+Ref: orders.restaurant_id > restaurants.id
+Ref: restaurants.user_id > users.id
+Ref: menu.restaurant_id > restaurants.id
+Ref: ratings.user_id > users.id
+Ref: ratings.restaurant_id > restaurants.id
