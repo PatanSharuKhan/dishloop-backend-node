@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var Menu = require('../models/menu.model.ts');
+var Restaurant = require('../models/restaurant.model.ts');
 
-/* GET menu listing. */
+/* GET restaurants listing. */
 router.get('/', async function(req, res, next) {
-    const items = await Menu.find({})
+    const items = await Restaurant.find({})
   res.status(200).json(items);
 });
 
