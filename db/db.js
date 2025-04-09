@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-export const connectDB = async () => {
+const connectDB = async () => {
     try {
         mongoose.connect(process.env.RESTAURANT_DATABASE_URL || '').then(() => {
             console.log('Database connected!')
@@ -10,7 +10,7 @@ export const connectDB = async () => {
     }
 }
 
-export const disconnectDB = async () => {
+const disconnectDB = async () => {
     try {
         await mongoose.connection.close()
         console.log('Database disconnected!')
@@ -18,3 +18,5 @@ export const disconnectDB = async () => {
         console.error('Error disconnecting the database:', e)
     }
 }
+
+module.exports = { connectDB, disconnectDB }

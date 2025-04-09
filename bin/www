@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('dishloop-backend-node:server');
 var http = require('http');
+var { connectDB } = require('../db/db')
 
 /**
  * Get port from environment and store in Express.
@@ -24,10 +25,14 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+connectDB().then(() => {
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}).catch((err) => {
+  console.error('Failed to connect to database:', err)
+  process.exit(1);
+})
 
 /**
  * Normalize a port into a number, string, or false.

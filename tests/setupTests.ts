@@ -18,6 +18,8 @@ beforeAll(async () => {
         ])
         await Restaurant.insertMany([
             { name: 'Hotel 1', address: 'Address something', rating: 3 },
+            { name: 'Hotel 2', address: 'Address something', rating: 3 },
+            { name: 'Hotel 3', address: 'Address something', rating: 3 },
         ])
     } catch (e) {
         console.error('Error connecting Database:', e)
