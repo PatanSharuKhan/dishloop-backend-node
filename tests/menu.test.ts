@@ -1,5 +1,5 @@
-import app from '../app'
-import request from 'supertest'
+var app = require('../app')
+var request = require('supertest')
 
 describe('Menu items', () => {
     it('Should display menu items', async () => {
