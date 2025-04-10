@@ -1,9 +1,10 @@
 var app = require('../app')
 var request = require('supertest')
+var messages = require('../routes/messages')
 
 describe('Menu items', () => {
-    it('Should display menu items', async () => {
+    it('Should list menu items', async () => {
         const response = await request(app).get('/menu').expect('Content-Type', /json/).expect(200);
-        expect(Array.isArray(response.body)).toBe(true)
+        expect(response.body.message).toBe(messages.success.fetch)
     })
 })

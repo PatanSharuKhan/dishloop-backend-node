@@ -1,11 +1,15 @@
 var express = require('express');
+var messages = require('./messages')
 var router = express.Router();
-var Menu = require('../models/menu.model.ts');
+var Menu = require('../models/menu.model')
 
-/* GET menu listing. */
-router.get('/', async function(req, res, next) {
-    const items = await Menu.find({})
-  res.status(200).json(items);
+router.get('/', async (req, res, next) => {
+  try {
+    const menus = await Menu.find({})
+    res.status(200).json({ message: messages.success.fetch, menus })
+  } catch (err) {
+    res.status(422).json({error: err.message})
+  }
 });
 
 module.exports = router;
