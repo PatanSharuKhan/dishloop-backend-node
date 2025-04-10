@@ -1,6 +1,8 @@
 var express = require("express")
 var router = express.Router()
 var Restaurant = require("../models/restaurant.model.ts")
+var Menu = require('../models/menu.model.ts')
+const messages = require("./messages.js")
 
 /**
  * @swagger
@@ -17,7 +19,7 @@ var Restaurant = require("../models/restaurant.model.ts")
 router.get("/", async function (req, res, next) {
   try {
     const restaurants = await Restaurant.find({})
-    res.status(200).json({ message: 'Fetched Restaurants Successfully', restaurants })
+    res.status(200).json({ message: messages.success.fetch, restaurants })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
@@ -50,11 +52,15 @@ router.get("/", async function (req, res, next) {
  *          description: Server error
  */
 router.post("/", async function (req, res, next) {
-  const { name, address, rating } = req.body
+  const { name, address, rating, user_id } = req.body
   try {
-    const restaurant = new Restaurant({ name, address, rating })
-    await restaurant.save();
-    res.status(200).json({ message: "Restaurant created successfully", data: restaurant })
+    const restaurant = await Restaurant.create({
+      name,
+      address,
+      rating,
+      user: user_id,
+    })
+    res.status(200).json({ message: messages.success.create, data: restaurant })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
@@ -76,7 +82,7 @@ router.get("/:id", async function (req, res, next) {
   const restaurant_id = req.params.id
   try {
     const restaurant = await Restaurant.findById(restaurant_id)
-    res.status(200).json({ message: "Restaurant fetched successfully", data: restaurant })
+    res.status(200).json({ message: messages.success.fetch, data: restaurant })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
@@ -98,7 +104,7 @@ router.put("/:id", async function (req, res, next) {
   const restaurant_id = req.params.id
   try {
     const restaurant = await Restaurant.findById(restaurant_id)
-    res.status(200).json({ message: "Restaurant updated successfully" })
+    res.status(200).json({ message: messages.success.update })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
@@ -120,7 +126,17 @@ router.delete("/:id", async function (req, res, next) {
   const restaurant_id = req.params.id
   try {
     await Restaurant.findByIdAndDelete(restaurant_id)
-    res.status(200).json({ message: "Restaurant Deleted Successfully" })
+    res.status(200).json({ message: messages.success.delete })
+  } catch (err) {
+    res.status(422).json({ error: err.message })
+  }
+})
+
+router.get('/:id/menu', async (req, res, next) => {
+  const restaurant_id = req.params.id
+  try {
+    const menu = await Menu.find({restaurant: restaurant_id})
+    res.status(200).json({ message: messages.success.fetch, menu })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
