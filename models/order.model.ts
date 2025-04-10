@@ -1,15 +1,12 @@
 var mongoose = require('mongoose')
 
 const OrderSchema = new mongoose.Schema({
-    user_id: { type: Number },
-    restaurant_id: { type: Number },
-    total_amount: { type: Number },
-    status: { type: String },
-    payment_method: { type: String },
-    payment_status: { type: String },
-    delivery_address: { type: Text },
-    placed_at: { type: String },
-    updated_at: { type: String }
-})
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    total_amount: { type: Number, default: 0 },
+    status: { type: String, enum: ['Pending', 'Completed', 'Cancelled'], default: 'Pending' },
+    payment_method: { type: String, enum: ['Cash', 'Card', 'UPI'], required: true },
+    payment_status: { type: String, enum: ['Paid', 'Unpaid'], default: 'Unpaid' },
+    delivery_address: { type: String, required: true },
+}, { timestamps: true })
 
 module.exports = mongoose.model("Order", OrderSchema)
