@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var menuRouter = require('./routes/menu');
 var restaurantRouter = require('./routes/restaurants');
+var orderRouter = require('./routes/orders');
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/menu', menuRouter);
 app.use('/restaurants', restaurantRouter);
+app.use('/orders', orderRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,7 +44,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({ error: 'Error'});
 });
 
 module.exports = app;

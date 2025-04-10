@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "test": "jest",
-    "test-dev": "jest --watchAll tests/restaurant.test.ts"
+    "test-dev": "jest --watchAll"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
