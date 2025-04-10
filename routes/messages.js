@@ -1,0 +1,47 @@
+module.exports = {
+  success: {
+    create: "Created Successfully!",
+    delete: "Deleted Successfully!",
+    update: "Updated Successfully!",
+    fetch: "Fetched Successfully!",
+    login: "Logged in successfully!",
+    logout: "Logged out successfully!",
+    register: "Registered successfully!",
+    passwordReset: "Password reset successfully!",
+    emailSent: "Email sent successfully!",
+    upload: "File uploaded successfully!",
+  },
+  failure: {
+    create: "Error while Creating",
+    delete: "Error while deleting",
+    update: "Error while deleting",
+    fetch: "Error while fetching",
+    login: "Login failed. Please check your credentials.",
+    logout: "Logout failed.",
+    register: "Registration failed.",
+    passwordReset: "Password reset failed.",
+    emailSend: "Failed to send email.",
+    upload: "File upload failed.",
+  },
+  not_found: {
+    id: "Item/Items with specified ID not found.",
+    user: "User not found.",
+    resource: "Requested resource not found.",
+    route: "Route does not exist.",
+  },
+  validation: {
+    required: "Required fields are missing.",
+    invalidEmail: "Invalid email address.",
+    weakPassword: "Password is too weak.",
+    invalidInput: "Invalid input provided.",
+    mismatch: "Passwords do not match.",
+  },
+  unauthorized: {
+    noToken: "No token provided.",
+    invalidToken: "Invalid or expired token.",
+    forbidden: "You do not have permission to perform this action.",
+  },
+  server: {
+    error: "Something went wrong. Please try again later.",
+  },
+}

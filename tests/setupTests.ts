@@ -1,7 +1,10 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
+import { connectDB, disconnectDB } from '../db/db';
 var Menu = require('../models/menu.model')
 var Restaurant = require('../models/restaurant.model')
-import { connectDB, disconnectDB } from '../db/db';
+var User = require('../models/user.model')
+var Order = require('../models/order.model')
+var OrderItem = require('../models/orderItem.model')
 
 let mongod: MongoMemoryServer;
 beforeAll(async () => {
@@ -11,16 +14,11 @@ beforeAll(async () => {
         console.log('Inmemory mongodb started.')
 
         await connectDB()
-        await Menu.insertMany([
-            { name: 'Idly', price: 5, quantity: 5 },
-            { name: 'Dosa', price: 10, quantity: 5 },
-            { name: 'Upma', price: 20, quantity: 5 },
-        ])
-        await Restaurant.insertMany([
-            { name: 'Hotel 1', address: 'Address something', rating: 3 },
-            { name: 'Hotel 2', address: 'Address something', rating: 3 },
-            { name: 'Hotel 3', address: 'Address something', rating: 3 },
-        ])
+        const user = await User.create({ email: 'user@gmail.com', password: 'User@123' })
+        const restaurant = await Restaurant.create({ name: 'Hotel 1', address: 'Address something', rating: 3, user: user._id })
+        const menu = await Menu.create({ name: 'Idly', price: 5, stock: 5, restaurant: restaurant._id })
+        const order = await Order.create({ user: user._id, payment_method: 'UPI', delivery_address: 'Something far away' })
+        const orderItem = await OrderItem.create({ order: order._id, restaurant: restaurant._id, menu: menu._id, price: menu.price })
     } catch (e) {
         console.error('Error connecting Database:', e)
     }
@@ -28,8 +26,11 @@ beforeAll(async () => {
 
 afterAll(async () => {
     try {
+        await OrderItem.deleteMany({})
+        await Order.deleteMany({})
         await Menu.deleteMany({})
         await Restaurant.deleteMany({})
+        await User.deleteMany({})
         await disconnectDB()
 
         if (mongod) {
