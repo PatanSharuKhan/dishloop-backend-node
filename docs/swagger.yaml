@@ -1,0 +1,97 @@
+openapi: 3.0.0
+info:
+  title: DishLoop Backend Node APIs
+  version: 1.0.0
+  description: API documentation for DishLoop backend.
+
+servers:
+  - url: http://localhost:3000
+
+components:
+  responses:
+    ServerError:
+      description: Server Error
+  body:
+    UserSchema:
+      schema:
+        type: object
+        required: [email, password]
+        properties:
+          email:
+            type: string
+            default: test@gmail.com
+          password:
+            type: string
+            default: Test@123
+
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get user list
+      responses:
+        200:
+          description: Returns user list
+        500:
+          $ref: "#/components/responses/ServerError"
+    post:
+      tags:
+        - Users
+      summary: Create User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            $ref: "#/components/body/UserSchema"
+      responses:
+        200:
+          description: Returns Created User
+        500:
+          $ref: "#/components/responses/ServerError"
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by Id
+      responses:
+        200:
+          description: Returns user list
+        500:
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            $ref: "#/components/body/UserSchema"
+      responses:
+        200:
+          description: Returns updated user object
+        500:
+          $ref: "#/components/responses/ServerError"
+    delete:
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+          required: true
+      responses:
+        200:
+          description: Returns Deleted user object
+        500:
+          $ref: "#/components/responses/ServerError"

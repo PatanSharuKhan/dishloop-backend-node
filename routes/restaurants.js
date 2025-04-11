@@ -1,21 +1,9 @@
 var express = require("express")
 var router = express.Router()
 var Restaurant = require("../models/restaurant.model")
-var Menu = require('../models/menu.model')
+var Menu = require("../models/menu.model")
 const messages = require("./messages.js")
 
-/**
- * @swagger
- * /restaurants:
- *    get:
- *      tags: [Restaurant]
- *      summary: Get a list of restaurants
- *      responses:
- *        200:
- *          description: Array of items
- *        500:
- *          description: Server error
- */
 router.get("/", async function (req, res, next) {
   try {
     const restaurants = await Restaurant.find({})
@@ -25,32 +13,6 @@ router.get("/", async function (req, res, next) {
   }
 })
 
-/**
- * @swagger
- * /restaurants:
- *    post:
- *      tags: [Restaurant]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              required: [name, address]
- *              properties:
- *                name:
- *                  type: string
- *                address:
- *                  type: string
- *                rating:
- *                  type: number
- *      summary: Create a restaurant
- *      responses:
- *        200:
- *          description: Restaurant created successfully
- *        500:
- *          description: Server error
- */
 router.post("/", async function (req, res, next) {
   const { name, address, rating, user_id } = req.body
   try {
@@ -66,18 +28,6 @@ router.post("/", async function (req, res, next) {
   }
 })
 
-/**
- * @swagger
- * /restaurants/:id:
- *    get:
- *      tags: [Restaurant]
- *      summary: Get restaurant by Id
- *      responses:
- *        200:
- *          description: Returns the message and requested restaurant
- *        500:
- *          description: Server error
- */
 router.get("/:id", async function (req, res, next) {
   const restaurant_id = req.params.id
   try {
@@ -88,18 +38,6 @@ router.get("/:id", async function (req, res, next) {
   }
 })
 
-/**
- * @swagger
- * /restaurants/:id:
- *    put:
- *      tags: [Restaurant]
- *      summary: Update a restaurant
- *      responses:
- *        200:
- *          description: Returns the updated restaurant
- *        500:
- *          description: Server error
- */
 router.put("/:id", async function (req, res, next) {
   const restaurant_id = req.params.id
   try {
@@ -110,18 +48,6 @@ router.put("/:id", async function (req, res, next) {
   }
 })
 
-/**
- * @swagger
- * /restaurants/:id:
- *    delete:
- *      tags: [Restaurant]
- *      summary: Delete a restaurant
- *      responses:
- *        200:
- *          description: Returns deleted object id with message
- *        500:
- *          description: Server error
- */
 router.delete("/:id", async function (req, res, next) {
   const restaurant_id = req.params.id
   try {
@@ -132,10 +58,10 @@ router.delete("/:id", async function (req, res, next) {
   }
 })
 
-router.get('/:id/menu', async (req, res, next) => {
+router.get("/:id/menu", async (req, res, next) => {
   const restaurant_id = req.params.id
   try {
-    const menu = await Menu.find({restaurant: restaurant_id})
+    const menu = await Menu.find({ restaurant: restaurant_id })
     res.status(200).json({ message: messages.success.fetch, menu })
   } catch (err) {
     res.status(422).json({ error: err.message })

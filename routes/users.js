@@ -25,7 +25,7 @@ router.post("/", async (req, res, next) => {
   const { email, password } = req.body
   try {
     const user = await User.create({ email, password })
-    res.status(200).json({ message: messages.success.create })
+    res.status(200).json({ message: messages.success.create, user })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
