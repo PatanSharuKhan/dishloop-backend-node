@@ -23,6 +23,45 @@ components:
           password:
             type: string
             default: Test@123
+    RestaurantSchema:
+      schema:
+        type: object
+        required: [name, address, user_id]
+        properties:
+          name:
+            type: string
+            default: Hotel-1
+          address:
+            type: string
+            default: Strange Address
+          user_id:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+    OrderSchema:
+      schema:
+        type: object
+        required: [user_id, payment_method, delivery_address, items]
+        properties:
+          user_id:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+          payment_method:
+            type: string
+            default: UPI
+          delivery_address:
+            type: string
+            default: Strange Address
+          items:
+            type: object
+            default:
+              [
+                {
+                  menu_id: 67f8801d993cf6d0636acc63,
+                  restaurant_id: 67f8801d993cf6d0636acc63,
+                  price: 10,
+                  quantity: 3,
+                },
+              ]
 
 paths:
   /users:
@@ -63,6 +102,7 @@ paths:
     put:
       tags:
         - Users
+      summary: Update user
       parameters:
         - in: path
           name: id
@@ -83,6 +123,7 @@ paths:
     delete:
       tags:
         - Users
+      summary: Delete user
       parameters:
         - in: path
           name: id
@@ -95,3 +136,108 @@ paths:
           description: Returns Deleted user object
         500:
           $ref: "#/components/responses/ServerError"
+
+  /restaurants:
+    get:
+      tags:
+        - Restaurant
+      summary: List of Restaurants
+      responses:
+        200:
+          description: Returns list of Restaurants
+        500:
+          $ref: "#/components/responses/ServerError"
+    post:
+      tags:
+        - Restaurant
+      summary: Add Restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            $ref: "#/components/body/RestaurantSchema"
+      responses:
+        200:
+          description: Create Restaurant
+        500:
+          $ref: "#/components/responses/ServerError"
+
+  /restaurants/{id}:
+    get:
+      tags:
+        - Restaurant
+      summary: Fetch Restaurant by Id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+      responses:
+        200:
+          description: Returns Restaurant object
+        500:
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - Restaurant
+      summary: Update Restaurant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+      responses:
+        200:
+          description: Returns updated Restaurant
+        500:
+          $ref: "#/components/responses/ServerError"
+    delete:
+      tags:
+        - Restaurant
+      summary: Delete Restaurant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            default: 67f8801d993cf6d0636acc63
+      responses:
+        200:
+          description: Returns Deleted Restaurant
+        500:
+          $ref: "#/components/responses/ServerError"
+
+  /orders:
+    get:
+      tags:
+        - Orders
+      summary: List Orders
+      responses:
+        200:
+          description: Returns Orders
+        500:
+          $ref: "#/components/responses/ServerError"
+    post:
+      tags:
+        - Orders
+      summary: Add Order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            $ref: "#/components/body/OrderSchema"
+      responses:
+        200:
+          description: Returns Added Order
+        500:
+          $ref: "#/components/responses/ServerError"
+
+  /menus:
+    get:
+      tags:
+        - Menus
+    post:
+      tags:
+        - Menus
