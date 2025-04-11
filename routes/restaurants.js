@@ -1,7 +1,7 @@
 var express = require("express")
 var router = express.Router()
-var Restaurant = require("../models/restaurant.model.ts")
-var Menu = require('../models/menu.model.ts')
+var Restaurant = require("../models/restaurant.model")
+var Menu = require('../models/menu.model')
 const messages = require("./messages.js")
 
 /**

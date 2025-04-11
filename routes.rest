@@ -1,0 +1,28 @@
+GET http://localhost:3000/users
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "email": "test@gmail.com",
+    "password": "Test@123"
+}
+
+###
+PUT http://localhost:3000/users/67f87f22993cf6d0636acc56
+Content-Type: application/json
+
+{
+    "email": "test@mail.com"
+}
+
+###
+DELETE http://localhost:3000/users/67f87f22993cf6d0636acc56
+
+###
+GET http://localhost:3000/restaurants
+
+###
+GET http://localhost:3000/restaurants/67f64fd964283d6474ab8fdc
+

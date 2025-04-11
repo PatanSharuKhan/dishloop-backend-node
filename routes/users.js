@@ -1,7 +1,7 @@
 var express = require("express")
 var messages = require("./messages")
 var router = express.Router()
-var User = require("../models/user.model.ts")
+var User = require("../models/user.model")
 
 router.get("/", async function (req, res, next) {
   try {
