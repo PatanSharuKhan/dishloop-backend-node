@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs')
+const cors = require('cors');
 
 const swaggerDocument = YAML.load('./docs/swagger.yaml')
 
@@ -16,10 +17,15 @@ var orderRouter = require('./routes/orders');
 
 var app = express();
 
+const corsOptions = {
+  origin: ['http://localhost:3002']
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors(corsOptions))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
