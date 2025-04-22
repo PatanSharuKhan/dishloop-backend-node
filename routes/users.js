@@ -2,6 +2,7 @@ var express = require("express")
 var messages = require("./messages")
 var router = express.Router()
 var User = require("../models/user.model")
+var bcrypt = require("bcrypt")
 
 router.get("/", async function (req, res, next) {
   try {
@@ -24,8 +25,17 @@ router.get("/:id", async function (req, res, next) {
 router.post("/", async (req, res, next) => {
   const { email, password } = req.body
   try {
-    const user = await User.create({ email, password })
-    res.status(200).json({ message: messages.success.create, user })
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return res.status(422).json({ error: err.message })
+      }
+      const user = await User.create({ email, password: hash })
+      console.log(user)
+      if (!user) {
+        return res.status(422).json({ error: "User not created" })
+      }
+      res.status(200).json({ message: messages.success.create, user })
+    })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
@@ -34,11 +44,14 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   const { email, password } = req.body
   try {
-    const user = await User.updateOne({ _id: req.params.id }, { email, password })
+    const user = await User.updateOne(
+      { _id: req.params.id },
+      { email, password }
+    )
     if (user.acknowledged) {
       res.status(200).json({ message: messages.success.update, user })
     } else {
-      res.status(403).json({ message: 'something went wrong', user })
+      res.status(403).json({ message: "something went wrong", user })
     }
   } catch (err) {
     res.status(422).json({ error: err.message })

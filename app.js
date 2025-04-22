@@ -6,6 +6,7 @@ var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs')
 const cors = require('cors');
+require('dotenv').config()
 
 const swaggerDocument = YAML.load('./docs/swagger.yaml')
 
