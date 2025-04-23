@@ -29,6 +29,12 @@ router.post("/signin", async function (req, res, next) {
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       )
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+        maxAge: 1800000, // 1 hour
+      })
       // Here you would generate a JWT token and send it back to the client
       res.status(200).json({ message: "Signin success", jwtToken: token })
     })

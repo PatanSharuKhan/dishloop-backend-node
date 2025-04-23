@@ -29,8 +29,11 @@ router.post("/", async (req, res, next) => {
       if (err) {
         return res.status(422).json({ error: err.message })
       }
+      const emailExists = await User.findOne({ email })
+      if (emailExists) {
+        return res.status(422).json({ error: "Email already exists" })
+      }
       const user = await User.create({ email, password: hash })
-      console.log(user)
       if (!user) {
         return res.status(422).json({ error: "User not created" })
       }
