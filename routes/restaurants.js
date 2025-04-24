@@ -2,6 +2,7 @@ var express = require("express")
 var router = express.Router()
 var Restaurant = require("../models/restaurant.model")
 var Menu = require("../models/menu.model")
+var User = require("../models/user.model")
 const messages = require("./messages.js")
 
 router.get("/", async function (req, res, next) {
@@ -14,13 +15,14 @@ router.get("/", async function (req, res, next) {
 })
 
 router.post("/", async function (req, res, next) {
-  const { name, address, rating, user_id } = req.body
+  const { name, address, rating } = req.body
   try {
+    const user = await User.findOne({email: req.user.email})
     const restaurant = await Restaurant.create({
       name,
       address,
       rating,
-      user: user_id,
+      user: user._id,
     })
     res.status(200).json({ message: messages.success.create, data: restaurant })
   } catch (err) {

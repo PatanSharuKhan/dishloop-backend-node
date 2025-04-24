@@ -7,6 +7,7 @@ const swaggerUi = require("swagger-ui-express")
 const YAML = require("yamljs")
 const cors = require("cors")
 require("dotenv").config()
+var jwt = require("jsonwebtoken")
 
 const swaggerDocument = YAML.load("./docs/swagger.yaml")
 
@@ -33,6 +34,28 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
+
+app.use((req, res, next) => {
+  if (req.path === "/signin" || req.path === "/users") {
+    return next()
+  } else {
+    try {
+      const jwtToken = req.cookies.token
+      if (!jwtToken) {
+        return res.status(401).json({ error: "Unauthorized" })
+      }
+      // Verify the JWT token
+      const payload = jwt.verify(jwtToken, process.env.JWT_SECRET)
+      if (!payload) {
+        return res.status(401).json({ error: "Unauthorized" })
+      }
+      req.user = payload
+      next()
+    } catch (err) {
+      return res.status(401).json({ error: "Unauthorized" })
+    }
+  }
+})
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use("/", indexRouter)
