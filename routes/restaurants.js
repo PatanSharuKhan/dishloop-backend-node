@@ -24,7 +24,17 @@ router.post("/", async function (req, res, next) {
       rating,
       user: user._id,
     })
-    res.status(200).json({ message: messages.success.create, data: restaurant })
+    res.status(200).json({ message: messages.success.create, restaurant })
+  } catch (err) {
+    res.status(422).json({ error: err.message })
+  }
+})
+
+router.get("/my-restaurants", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.user.email })
+    const restaurants = await Restaurant.find({ user: user._id })
+    res.status(200).json({ message: messages.success.fetch, restaurants })
   } catch (err) {
     res.status(422).json({ error: err.message })
   }
